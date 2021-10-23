@@ -3,14 +3,14 @@
 #include <cmath>
 
 using namespace std;
-
+template <class T>
 class Node
 {
-    int data;
-    Node *next;
+    T data;
+    Node<T> *next;
 
 public:
-    Node(int data)
+    Node(T data)
     {
         this->next = NULL;
         this->data = data;
@@ -24,7 +24,7 @@ public:
 
     void triversal()
     {
-        Node *ptr = this;
+        Node<T> *ptr = this;
         while (ptr != NULL)
         {
             cout << " " << ptr->data;
@@ -32,18 +32,18 @@ public:
         }
         cout << endl;
     }
-    Node *insertAtBeginning(int data)
+    Node<T> *insertAtBeginning(T data)
     {
-        Node *ptr;
-        ptr = new Node();
+        Node<T> *ptr;
+        ptr = new Node<T>();
         ptr->next = this;
         ptr->data = data;
         return ptr;
     }
-    Node *insertAtEnd(int data)
+    Node<T> *insertAtEnd(T data)
     {
-        Node *ptr = new Node();
-        Node *temp = new Node();
+        Node<T> *ptr = new Node<T>();
+        Node<T> *temp = new Node<T>();
         temp = this;
         while (temp->next != NULL)
         {
@@ -54,21 +54,21 @@ public:
         ptr->data = data;
         return this;
     }
-    Node *insertAtAfter(Node *prevNode, int data)
+    Node<T> *insertAtAfter(Node *prevNode, T data)
     {
-        Node *ptr = new Node();
-        Node *temp = new Node();
+        Node<T> *ptr = new Node<T>();
+        Node<T> *temp = new Node<T>();
         temp = this;
         ptr->data = data;
         ptr->next = prevNode->next;
         prevNode->next = ptr;
         return this;
     }
-    Node *insertAtIndex(int data, int index)
+    Node<T> *insertAtIndex(T data, int index)
     {
-        Node *ptr;
-        Node *Temp;
-        ptr = new Node();
+        Node<T> *ptr;
+        Node<T> *Temp;
+        ptr = new Node<T>();
         Temp = this;
         if (index == 0)
         {
@@ -90,26 +90,27 @@ public:
 
         return this;
     }
-    Node *DeleteHead()
+    Node<T> *DeleteHead()
     {
         if (this != NULL)
         {
-            Node *head = this;
-            Node *ptr = this;
+            Node<T> *head = this;
+            Node<T> *ptr = this;
             head = head->next;
             free(ptr);
             return head;
         }
         return this;
     }
-    Node *DeleteAtIndex(int index)
+    Node<T> *DeleteAtIndex(T index)
     {
-
-        Node *ptr = this;
-        Node *temp;
+        if (this == NULL)
+            return this;
+        Node<T> *ptr = this;
+        Node<T> *temp;
         bool flag = false;
         int counter = 0;
-        Node *t = this;
+        Node<T> *t = this;
         if (index == 0)
         {
             return this->DeleteHead();
@@ -141,10 +142,10 @@ public:
         free(temp);
         return this;
     }
-    Node *UpdateByKey(int key)
+    Node<T> *UpdateByKey(T key)
     {
         bool check = true;
-        Node *temp = this;
+        Node<T> *temp = this;
         while (temp != NULL)
         {
             if (temp->data == key)
@@ -165,10 +166,12 @@ public:
         temp->data = val;
         return this;
     }
-    Node *DeleteLastNode()
+    Node<T> *DeleteLastNode()
     {
-        Node *ptr = this;
-        Node *temp = this->next;
+        if (this == NULL)
+            return this;
+        Node<T> *ptr = this;
+        Node<T> *temp = this->next;
         while (temp->next != NULL)
         {
             ptr = ptr->next;
@@ -179,10 +182,14 @@ public:
         return this;
     }
 
-    Node *DeleteWithKey(int value)
+    Node<T> *DeleteWithKey(T value)
     {
-        Node *ptr = this;
-        Node *temp = this->next;
+        if (this == NULL)
+            return this;
+        Node<T> *ptr = this;
+        Node<T> *temp = this->next;
+        if (ptr->data == value)
+            return this->DeleteHead();
         while (temp->data != value && temp->next != NULL)
         {
             ptr = ptr->next;
@@ -203,21 +210,35 @@ public:
     }
     bool isFull()
     {
-        Node *temp = new Node();
+        Node<T> *temp = new Node<T>();
         if (temp == NULL)
             return true;
         return false;
     }
+    Node* deleteList()
+    {
+        Node<T> *cur = this;
+        Node<T> *Nex = NULL;
+        while (cur != NULL)
+        {
+            Nex = cur->next;
+            delete (cur);
+            cur = Nex;
+        }
+        return NULL;
+    }
+   
 };
 
 int main()
 {
-    int data, Index;
-    Node *List;
+    float data;
+    int Index;
+    Node<int> *List;
     cout << "List created enter head node data : ";
     cin >> data;
-    List = new Node(data);
-
+    List = new Node<int>(data);
+    //cout<<List;
     int choice;
     while (choice != 0)
     {
@@ -242,6 +263,7 @@ int main()
              << "Press 10 for IsFull"
              << endl
              << "Press 11 for updating node value" << endl
+             << "Press 12 for  deleting List" << endl
              << "Press 0 for end " << endl
              << endl;
         cin >> choice;
@@ -299,6 +321,9 @@ int main()
             cout << "Enter data which is to be updated : ";
             cin >> data;
             List = List->UpdateByKey(data);
+            break;
+        case 12:
+            List->deleteList();
             break;
         case 0:
             break;

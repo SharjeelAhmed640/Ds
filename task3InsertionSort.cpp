@@ -2,6 +2,21 @@
 #include <iomanip>
 #include <cstring>
 using namespace std;
+void insertionSort(int *arr, int n)
+{
+    int key, i, j;
+    for (i = 1; i < n; i++)
+    {
+        key = arr[i];
+        j = i - 1;
+        while (arr[j] > key && j >= 0)
+        {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = key;
+    }
+}
 void print(int *arr, int n)
 {
     for (int i = 0; i < n; i++)
@@ -10,23 +25,9 @@ void print(int *arr, int n)
     }
     cout << endl;
 }
-void insertionSort(int *A, int n)
-{
-    int key, j;
-    for (int i = 1; i <= n - 1; i++) // For number of pass 3 5 1 0 9
-    {
-        key = A[i];
-        j = i - 1;
-        while (j >= 0 && A[j] > key)
-        {
-            A[j + 1] = A[j];
-            j--;
-        }
-        A[j+1]=key;
-    }
-}
 int main()
 {
+
     int n;
     cout << "Enter array size : ";
     cin >> n;
@@ -38,8 +39,9 @@ int main()
     }
     cout << "Before sorting : ";
     print(arr, n);
-    insertionSort(arr,n);
+    insertionSort(arr, n);
     cout << "After sorting : ";
     print(arr, n);
+    return 0;
     return 0;
 }

@@ -94,7 +94,7 @@ int main()
     head->triversal(head);
 
     //insert after index 4
-    head = head->insertAtIndex(66, 1);
+    head = head->insertAtIndex(66, 2);
     head->triversal(head);
 
     //insert at the end
