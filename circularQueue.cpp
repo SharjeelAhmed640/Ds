@@ -25,7 +25,7 @@ public:
             cout << "Queue is full" << endl;
         else
         {
-            this->r=(this->r+1)%this->size;
+            this->r = (this->r + 1) % this->size;
             this->arr[this->r] = val;
         }
     }
@@ -36,14 +36,14 @@ public:
             cout << "Queue is Empty" << endl;
         else
         {
-            this->f=(this->f+1)%this->size;
+            this->f = (this->f + 1) % this->size;
             a = this->arr[this->f];
-            this->f=(this->f-1)%this->size;
+            this->f = (this->f - 1) % this->size;
             for (int i = 0; i < size - 1; i++)
             {
                 this->arr[i] = this->arr[i + 1];
             }
-            this->r=(this->r-1)%this->size;
+            this->r = (this->r - 1) % this->size;
         }
         return a;
     }
@@ -71,12 +71,12 @@ public:
 int main()
 {
     circularQueue<int> *Q = new circularQueue<int>(2);
-    //cout << Q->isEmpty();
+    // cout << Q->isEmpty();
     Q->enQueue(1);
     Q->enQueue(10);
     Q->enQueue(10);
     Q->enQueue(100);
-   // cout << Q->deQueue() << endl;
+    // cout << Q->deQueue() << endl;
     Q->enQueue(100);
     Q->print();
     cout << Q->deQueue() << endl;
