@@ -1,6 +1,6 @@
 #include <iostream>
 #include <iomanip>
-
+#include <cstring>
 using namespace std;
 
 class Node
@@ -44,9 +44,9 @@ public:
     {
         Node *temp = head;
         Node *ptr = new Node(data);
-        if(head==NULL)
+        if (head == NULL)
         {
-            head=ptr;
+            head = ptr;
             return;
         }
         while (temp->next != NULL)
@@ -60,9 +60,9 @@ public:
     {
         Node *temp = head;
         Node *ptr = new Node(data);
-        if(head==NULL)
+        if (head == NULL)
         {
-            head=ptr;
+            head = ptr;
             return;
         }
         temp->prev = ptr;
@@ -74,9 +74,9 @@ public:
     {
         Node *temp = head;
         Node *ptr = new Node(data);
-        if(head==NULL)
+        if (head == NULL)
         {
-            head=ptr;
+            head = ptr;
             return;
         }
         int i = 0;
@@ -126,11 +126,11 @@ public:
         ptr->next = NULL;
         delete temp;
     }
-    void delAtindex(int index)
+    void delatkey(int key)
     {
         if (head == NULL)
             return;
-        if (index == 0)
+        if (key == head->data)
         {
             this->delHead();
             return;
@@ -141,7 +141,7 @@ public:
         int i = 0;
         while (temp != NULL)
         {
-            if ((i + 1) == index)
+            if (ptr->data = key)
                 break;
             temp = temp->next;
             ptr = ptr->next;
@@ -152,7 +152,7 @@ public:
             this->delTail();
             return;
         }
-        if ((i + 1) == index)
+        if (ptr->data = key)
         {
             temp->next->prev = ptr;
             ptr->next = temp->next;
@@ -161,18 +161,23 @@ public:
         }
 
         {
-            cout << "Unvalid index" << endl;
+            cout << "Not found" << endl;
         }
     }
-    void triversal()
+    void search(int key)
     {
         Node *temp = head;
         while (temp != NULL)
         {
-            cout << temp->data << " ";
+            if (key == temp->data)
+            {
+                cout << "Found" << endl;
+                return;
+            }
+
             temp = temp->next;
         }
-        cout << endl;
+        cout << "Not found" << endl;
     }
 
     void printrev()
@@ -184,35 +189,112 @@ public:
         }
         while (temp != NULL)
         {
-            cout << temp->data<<" ";
+            cout << temp->data << " ";
             temp = temp->prev;
         }
-        cout<<endl;
+        cout << endl;
+    }
+    void triversal()
+    {
+        Node *temp = head;
+        if (temp == 0)
+            cout << "-";
+        while (temp != NULL)
+        {
+            cout << temp->data << "->";
+            temp = temp->next;
+        }
+        cout << endl;
     }
 };
+class HashTable
+{
+    int noofelements;
+    DoubleList l[10];
 
+public:
+    HashTable()
+    {
+        noofelements = 0;
+        for (int i = 0; i < 10; i++)
+        {
+            l[i] = NULL;
+        }
+    }
+    int hashfunc(int key)
+    {
+        return (key * 7) % 10;
+    }
+    void insert(int key)
+    {
+        int index = hashfunc(key);
+        l[index].insertAtBeg(key);
+        noofelements++;
+    }
+    void delkey(int key)
+    {
+        int index = hashfunc(key);
+        l[index].delatkey(key);
+        noofelements--;
+    }
+    void search(int key)
+    {
+        int index = hashfunc(key);
+        l[index].search(key);
+    }
+    void printtable()
+    {
+        for (int i = 0; i < 9; i++)
+        {
+
+            l[i].triversal();
+        }
+        cout << endl
+             << endl;
+    }
+};
 int main()
 {
-    DoubleList *l=new DoubleList[4];
-    l[0].insertAtBeg(1);
-    l[0].insertAtBeg(2);
-    l[0].insertAtBeg(3);
-
-    l[0].triversal();
-    DoubleList *temp=l;
-    temp[0].triversal();
-    l=new DoubleList[6];
-    for (int i = 0; i < 4; i++)
+    HashTable h;
+    int n;
+    do
     {
-        l[i]=temp[i];
-    }
-    l[0].triversal();
-    l[5].insertAtBeg(99);
-    l[5].insertAtBeg(99);
-    l[5].insertAtBeg(99);
-    l[5].triversal();
-    
+        cout << "Press 1 to insert key" << endl
+             << "Press 2 to delete key" << endl
+             << "Press 3 to search key" << endl
 
-    
+             << "Press 5 to print table " << endl
+             << "Press 0 to exit" << endl;
+        cin >> n;
+        if (!n)
+            break;
+        switch (n)
+        {
+        case 1:
+            cout << "Enter key to insert : ";
+            cin >> n;
+            h.insert(n);
+            break;
+        case 2:
+            cout << "Enter key to delete : ";
+            cin >> n;
+            h.delkey(n);
+            break;
+        case 3:
+            cout << "Enter key to search : ";
+            cin >> n;
+            h.search(n);
+            break;
+        case 5:
+            h.printtable();
+            break;
+        default:
+            cout << "Enter valid input " << endl
+                 << endl;
+            break;
+        }
+
+    } while (n != 0);
+
     return 0;
 }

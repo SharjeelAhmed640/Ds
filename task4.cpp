@@ -1,6 +1,5 @@
 #include <iostream>
 #include <stack>
-#include <queue>
 using namespace std;
 
 class Node
@@ -62,28 +61,12 @@ class BST
             cout << r->data << "\t";
         }
     }
-    Node *recursiveSearch(Node *r, int val)
-    {
-        if (r == NULL)
-        {
-            cout << "Not found" << endl;
-            return NULL;
-        }
-        if (r->data == val)
-            return r;
-
-        else if (val < r->data)
-            return recursiveSearch(r->left, val);
-
-        else
-            return recursiveSearch(r->right, val);
-    }
     bool ifBST(Node *r, Node *left, Node *right)
     {
 
         if (root == NULL)
             return true;
-        if (left != NULL && root->data <= left->data)
+        if (left != NULL and root->data <= left->data)
             return false;
 
         if (right != NULL && root->data >= right->data)
@@ -153,21 +136,6 @@ class BST
             }
         }
         return r;
-    }
-
-    int height(Node *r)
-    {
-        if (r == NULL)
-            return 0;
-        else
-        {
-            int left_height = height(r->left);
-            int right_height = height(r->right);
-            if (left_height >= right_height)
-                return left_height + 1;
-            else
-                return right_height + 1;
-        }
     }
 
 public:
@@ -257,11 +225,7 @@ public:
                 st.push(temp->right);
         }
     }
-    Node *search(int val)
-    {
-        Node *temp = root;
-        return recursiveSearch(temp, val);
-    }
+
     bool isBst()
     {
         Node *r = this->root;
@@ -307,118 +271,29 @@ public:
             this->deleteNode(d);
         }
     }
-    int TreeHeight()
-    {
-        Node *temp = root;
-        return height(temp);
-    }
-    void breadthFirst()
-    {
-        queue<Node *> q;
-        Node *temp = root;
-        if (temp != NULL)
-        {
-            q.push(temp);
-            while (!q.empty())
-            {
-                temp=q.front();
-                q.pop();
-                cout<<temp->data<<"->";
-                if(temp->left!=0)
-                q.push(temp->left);
-                if(temp->right!=0)
-                q.push(temp->right);
-            }
-        }
-    }
 };
 
 int main()
 {
-    int n, val, min, max;
+    int arr[] = {15, 10, 20, 8, 12, 16, 25};
     BST tree;
-    while (1)
+    //       15
+    //     /   \
+    //    /     \
+    //   10     20
+    //  /  \   /  \
+    // 8   12 16   25
+    for (size_t i = 0; i < 7; i++)
     {
-        cout << "Press 1 to add Node" << endl
-             << "Press 2 to delete Node" << endl
-             << "Press 3 to search Node" << endl
-             << "Press 4 to truncate" << endl
-             << "Press 5 to print preorder triversal" << endl
-             << "Press 5 to print inorder triversal" << endl
-             << "Press 6 to print postorder triversal" << endl
-             << "Press 7 if a tree is BST?" << endl
-             << "Press 8 for tree height" << endl
-             << "press 0 to exit" << endl;
-        cin >> n;
-        if (n == 0)
-            break;
-        switch (n)
-        {
-        case 1:
-        {
-            cout << "Enter node data to delete Node : ";
-            cin >> val;
-            tree.AddNode(val);
-            break;
-        }
-        case 2:
-        {
-            cout << "Enter node data to delete Node : ";
-            cin >> val;
-            tree.deleteNode(val);
-            break;
-        }
-        case 3:
-        {
-            cout << "Enter node data to search Node : ";
-            cin >> val;
-            Node *temp = tree.search(val);
-            if (temp != NULL)
-            {
-                cout << "Node found" << endl;
-            }
-            break;
-        }
-        case 4:
-        {
-            cout << "Enter min limit for truncate : ";
-            cin >> min;
-            cout << "Enter max limit for truncate : ";
-            cin >> max;
-            tree.truncate(min, max);
-            break;
-        }
-        case 5:
-        {
-            tree.Preordertriversal();
-            break;
-        }
-        case 6:
-        {
-            tree.inOrderTriversal();
-            break;
-        }
-        case 7:
-        {
-            tree.Postordertriversal();
-            break;
-        }
-        case 8:
-        {
-            cout << tree.TreeHeight();
-            break;
-        }
-        case 0:
-        {
-            break;
-        }
-        default:
-        {
-            cout << "Invalid input" << endl;
-            break;
-        }
-        }
+        tree.AddNode(arr[i]);
     }
 
-    return 0;
+    cout << "pre order triversal(recurssive)" << endl;
+    tree.inOrderTriversal();
+    cout << "After truncate" << endl;
+    tree.truncate(9, 12);
+    cout << endl
+         << "result" << endl;
+
+    tree.inOrderTriversal();
 }

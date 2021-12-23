@@ -1,0 +1,191 @@
+
+
+#include <iostream>
+
+using namespace std;
+
+class HashTable
+{
+    int usedsize;
+    int *arr;
+    int size;
+
+public:
+    HashTable()
+    {
+        usedsize = 0;
+        size = 10;
+        arr = new int[size]{0};
+    }
+    HashTable(int s)
+    {
+        usedsize = 0;
+        size = s;
+        arr = new int[size]{0};
+    }
+    void increaseTablesize(int s)
+    {
+        if (size < s)
+        {
+            int *temp = arr;
+            int oldsize = size;
+            size = s;
+            arr = new int[size]{0};
+            for (int i = 0; i < oldsize; i++)
+            {
+                arr[i] = temp[i];
+            }
+        }
+        else
+            cout << "Entered size is less than current table size " << endl;
+    }
+    int hashfunc(int key)
+    {
+        return (key * 7) % this->size;
+    }
+    void insert(int key)
+    {
+
+        int index, i;
+        bool inserted = false;
+        for (i = 0; i < this->size; i++)
+        {
+            index = (hashfunc(key) + i) % this->size;
+            if (arr[index] == 0 || arr[index] == -999)
+            {
+                usedsize++;
+                inserted = true;
+                arr[index] = key;
+                break;
+            }
+        }
+        if (i == size)
+        {
+            cout << "No element can insert hash table full" << endl;
+        }
+    }
+    void del_key(int key)
+    {
+        int i, index, j = 0;
+        while (j < 2)
+        {
+            for (i = 0; i < size; i++)
+            {
+                index = (hashfunc(key) + i) % this->size;
+                if (arr[index] == 0)
+                {
+
+                    cout << "Key Not found" << endl;
+                    break;
+                }
+                // cout << arr[index] << " " << index << endl;
+                if (arr[index] == key)
+                {
+                    usedsize--;
+                    arr[index] = -999;
+                    break;
+                }
+            }
+        }
+        if (i == size)
+        {
+            cout << "Key not found" << endl;
+        }
+    }
+    void search(int key)
+    {
+        int i, index;
+        int j = 0;
+        while (j < 2)
+        {
+            for (i = 0; i < size; i++)
+            {
+                index = (hashfunc(key) + i) % this->size;
+                if (arr[index] == 0)
+                {
+                    cout << "Key Not found" << endl;
+                }
+                if (arr[index] == key)
+                {
+                    cout << "Found at index : " << index << endl;
+                    ;
+                }
+            }
+        }
+        if (i == size)
+        {
+            cout << "Key not found" << endl;
+        }
+    }
+    void printtable()
+    {
+        for (int i = 0; i < size; i++)
+        {
+            if (arr[i] != 0 && arr[i] != -999)
+            {
+                cout << arr[i] << " ";
+            }
+            else
+                cout << "- ";
+        }
+        cout << endl
+             << endl;
+    }
+    bool isempty()
+    {
+        if (usedsize == 0)
+            return true;
+        return false;
+    }
+};
+
+int main()
+{
+    HashTable h;
+    int n;
+    do
+    {
+        cout << "Press 1 to insert key" << endl
+             << "Press 2 to delete key" << endl
+             << "Press 3 to search key" << endl
+             << "Press 4 to increase table size" << endl
+             << "Press 5 to print table " << endl
+             << "Press 0 to exit" << endl;
+        cin >> n;
+        if (!n)
+            break;
+        switch (n)
+        {
+        case 1:
+            cout << "Enter key to insert : ";
+            cin >> n;
+            h.insert(n);
+            break;
+        case 2:
+            cout << "Enter key to delete : ";
+            cin >> n;
+            h.del_key(n);
+            break;
+        case 3:
+            cout << "Enter key to search : ";
+            cin >> n;
+            h.search(n);
+            break;
+        case 4:
+            cout << "Enter increased  table size : ";
+            cin >> n;
+            h.increaseTablesize(n);
+            break;
+        case 5:
+            h.printtable();
+            break;
+        default:
+            cout << "Enter valid input " << endl
+                 << endl;
+            break;
+        }
+
+    } while (n != 0);
+
+    return 0;
+}

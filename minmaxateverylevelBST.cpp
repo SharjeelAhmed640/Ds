@@ -24,7 +24,6 @@ public:
 };
 class BST
 {
-    Node *root;
     void preOrderTri(Node *r)
     {
         if (r != NULL)
@@ -171,6 +170,7 @@ class BST
     }
 
 public:
+    Node *root;
     BST()
     {
         root = 0;
@@ -187,26 +187,26 @@ public:
         if (root == 0)
         {
             root = ptr;
-            cout << "added as Root" << endl;
+            // cout << "added as Root" << endl;
             return;
         }
         while (temp != 0)
         {
             if (data == temp->data)
             {
-                cout << "Duplicate value" << endl;
+                // cout << "Duplicate value" << endl;
                 return;
             }
             else if (temp->data > data && temp->left == 0)
             {
                 temp->left = ptr;
-                cout << "Inserted at left of : " << temp->data << endl;
+                // cout << "Inserted at left of : " << temp->data << endl;
                 return;
             }
             else if (temp->data < data && temp->right == 0)
             {
                 temp->right = ptr;
-                cout << "Inserted at right of : " << temp->data << endl;
+                // cout << "Inserted at right of : " << temp->data << endl;
                 return;
             }
             else if (temp->data > data && temp->left != 0)
@@ -321,15 +321,68 @@ public:
             q.push(temp);
             while (!q.empty())
             {
-                temp=q.front();
+                temp = q.front();
                 q.pop();
-                cout<<temp->data<<"->";
-                if(temp->left!=0)
-                q.push(temp->left);
-                if(temp->right!=0)
-                q.push(temp->right);
+                cout << temp->data << "->";
+                if (temp->left != 0)
+                    q.push(temp->left);
+                if (temp->right != 0)
+                    q.push(temp->right);
             }
         }
+    }
+    void printminmaxatLevel(Node *r, int level, int &min, int &max, int i = 0)
+    {
+        if (r != NULL && i <= level)
+        {
+            printminmaxatLevel(r->left, level, min, max, i + 1);
+            printminmaxatLevel(r->right, level, min, max, i + 1);
+
+            if (r->data > max && this->getLevelUtil(root, r->data) - 1 == level)
+            {
+                max = r->data;
+                // cout << i << " max " << this->getLevelUtil(root, r->data) - 1 << endl;
+            }
+            if (r->data < min && this->getLevelUtil(root, r->data) - 1 == level)
+            {
+                min = r->data;
+                // cout << i << " min " << this->getLevelUtil(root, r->data) - 1 << endl;
+            }
+        }
+    }
+    void printminmaxatLevel(Node *r, int &min, int &max)
+    {
+        if (r != NULL)
+        {
+            printminmaxatLevel(r->left, min, max);
+            printminmaxatLevel(r->right, min, max);
+            if (r->left == 0 && r->right == 0)
+            {
+                if (r->data > max)
+                    max = r->data;
+                if (r->data < min)
+                    min = r->data;
+            }
+        }
+    }
+
+    int getLevelUtil(Node *node,
+                     int data, int level = 1)
+    {
+        if (node == NULL)
+            return 0;
+
+        if (node->data == data)
+            return level;
+
+        int downlevel = getLevelUtil(node->left,
+                                     data, level + 1);
+        if (downlevel != 0)
+            return downlevel;
+
+        downlevel = getLevelUtil(node->right,
+                                 data, level + 1);
+        return downlevel;
     }
 };
 
@@ -337,88 +390,24 @@ int main()
 {
     int n, val, min, max;
     BST tree;
-    while (1)
+    cin >> n;
+    for (int i = 0; i < n; i++)
     {
-        cout << "Press 1 to add Node" << endl
-             << "Press 2 to delete Node" << endl
-             << "Press 3 to search Node" << endl
-             << "Press 4 to truncate" << endl
-             << "Press 5 to print preorder triversal" << endl
-             << "Press 5 to print inorder triversal" << endl
-             << "Press 6 to print postorder triversal" << endl
-             << "Press 7 if a tree is BST?" << endl
-             << "Press 8 for tree height" << endl
-             << "press 0 to exit" << endl;
-        cin >> n;
-        if (n == 0)
-            break;
-        switch (n)
-        {
-        case 1:
-        {
-            cout << "Enter node data to delete Node : ";
-            cin >> val;
-            tree.AddNode(val);
-            break;
-        }
-        case 2:
-        {
-            cout << "Enter node data to delete Node : ";
-            cin >> val;
-            tree.deleteNode(val);
-            break;
-        }
-        case 3:
-        {
-            cout << "Enter node data to search Node : ";
-            cin >> val;
-            Node *temp = tree.search(val);
-            if (temp != NULL)
-            {
-                cout << "Node found" << endl;
-            }
-            break;
-        }
-        case 4:
-        {
-            cout << "Enter min limit for truncate : ";
-            cin >> min;
-            cout << "Enter max limit for truncate : ";
-            cin >> max;
-            tree.truncate(min, max);
-            break;
-        }
-        case 5:
-        {
-            tree.Preordertriversal();
-            break;
-        }
-        case 6:
-        {
-            tree.inOrderTriversal();
-            break;
-        }
-        case 7:
-        {
-            tree.Postordertriversal();
-            break;
-        }
-        case 8:
-        {
-            cout << tree.TreeHeight();
-            break;
-        }
-        case 0:
-        {
-            break;
-        }
-        default:
-        {
-            cout << "Invalid input" << endl;
-            break;
-        }
-        }
+        cin >> val;
+        tree.AddNode(val);
     }
-
+    // cout<<tree.getLevelUtil(tree.root,val)<<endl<<endl;
+    for (int i = 0; i < tree.getLevelUtil(tree.root, val); i++)
+    {
+        min = 9999999;
+        max = 0;
+        tree.printminmaxatLevel(tree.root, i, min, max);
+        cout << min << " " << max << endl;
+    }
+    // min = 9999999;
+    // max = 0;
+    // tree.printminmaxatLevel(tree.root, min, max);
+    // cout << min << " " << max << endl;
+    // tree.inOrderTriversal();
     return 0;
 }
