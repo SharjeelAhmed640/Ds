@@ -350,24 +350,9 @@ public:
             }
         }
     }
-    void printminmaxatLevel(Node *r, int &min, int &max)
-    {
-        if (r != NULL)
-        {
-            printminmaxatLevel(r->left, min, max);
-            printminmaxatLevel(r->right, min, max);
-            if (r->left == 0 && r->right == 0)
-            {
-                if (r->data > max)
-                    max = r->data;
-                if (r->data < min)
-                    min = r->data;
-            }
-        }
-    }
+    
 
-    int getLevelUtil(Node *node,
-                     int data, int level = 1)
+    int getLevelUtil(Node *node, int data, int level = 1)
     {
         if (node == NULL)
             return 0;

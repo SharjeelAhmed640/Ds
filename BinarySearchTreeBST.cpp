@@ -194,7 +194,7 @@ public:
         {
             if (data == temp->data)
             {
-                cout << "Duplicate value" << endl;
+                cout << "Duplicate value" << endl; // c++
                 return;
             }
             else if (temp->data > data && temp->left == 0)
@@ -224,6 +224,54 @@ public:
         Node *temp = root;
         this->preOrderTri(temp);
         cout << endl;
+    }
+    Node *inordersuc(Node *r)
+    {
+        Node *temp = r;
+        temp = temp->left;
+        while (temp->right->right != NULL)
+            temp = temp->right;
+        return temp;
+    }
+    void del(int r)
+    {
+        if (root == NULL)
+            return;
+        if (root->data == r && root->left == NULL && root->right == NULL)
+        {
+            root = NULL;
+        }
+        Node *key_node = NULL;
+        Node *temp;
+        Node *last;
+        queue<Node *> q;
+        q.push(root);
+        while (!q.empty())
+        {
+            temp = q.front();
+            q.pop();
+            if (r == temp->data)
+                key_node = temp;
+            if (temp->left)
+            {
+                last = temp;
+                q.push(temp->left);
+            }
+            if (temp->right)
+            {
+                last = temp;
+                q.push(temp->right);
+            }
+        }
+        if (key_node != NULL)
+        {
+            key_node->data = temp->data;
+            if (last->right == temp)
+                last->right = NULL;
+            else
+                last->left = NULL;
+            delete (temp);
+        }
     }
     void Postordertriversal()
     {
@@ -266,7 +314,6 @@ public:
     {
         Node *r = this->root;
         if (this->ifBST(r, 0, 0))
-            cout << "FAs";
         return true;
         return false;
     }
@@ -321,13 +368,13 @@ public:
             q.push(temp);
             while (!q.empty())
             {
-                temp=q.front();
+                temp = q.front();
                 q.pop();
-                cout<<temp->data<<"->";
-                if(temp->left!=0)
-                q.push(temp->left);
-                if(temp->right!=0)
-                q.push(temp->right);
+                cout << temp->data << "->";
+                if (temp->left != 0)
+                    q.push(temp->left);
+                if (temp->right != 0)
+                    q.push(temp->right);
             }
         }
     }
@@ -365,7 +412,7 @@ int main()
         {
             cout << "Enter node data to delete Node : ";
             cin >> val;
-            tree.deleteNode(val);
+            tree.del(val);
             break;
         }
         case 3:

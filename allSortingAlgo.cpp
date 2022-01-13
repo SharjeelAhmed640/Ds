@@ -103,7 +103,7 @@ void print(int *arr, int n)
 void merge(int *arr, int mid, int low, int high)
 {
     int i, j, k;
-    int brr[high - low + 1];
+    int *brr=new int[high - low + 1];
     i = low;
     j = mid + 1;
     k = low;

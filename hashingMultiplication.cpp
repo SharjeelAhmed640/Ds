@@ -1,10 +1,11 @@
+
+
 #include <iostream>
-#include <cmath>
+
 using namespace std;
 
 class HashTable
 {
-protected:
     int *arr;
     int size;
 
@@ -37,7 +38,10 @@ public:
         else
             cout << "Entered size is less than current table size " << endl;
     }
-    int virtual hashfunc(int key) = 0;
+    int hashfunc(int key)
+    {
+        return (key * 7) % this->size;
+    }
     void insert(int key)
     {
 
@@ -119,110 +123,57 @@ public:
              << endl;
     }
 };
-class divHashtable : public HashTable
-{
-public:
-    int hashfunc(int key)
-    {
-        return key % size;
-    }
-};
-class mulHashtable : public HashTable
-{
-public:
-    int hashfunc(int key)
-    {
-        return floor(size * key);
-    }
-};
-class middsqrHashtable : public HashTable
-{
-public:
-    int middleDigit(int n)
-    {
 
-        int digits = (int)log10(n) + 1;
-
-        n = (int)(n / pow(10, digits / 2)) % 10;
-
-        return n;
-    }
-    int hashfunc(int key)
-    {
-        int value = key * key;
-        int middle_value = middleDigit(value);
-        return middle_value;
-    }
-};
-class foldingHashtable : public HashTable
-{
-
-    int hashfunc(int k)
-    {
-        return k;
-    }
-
-public:
-//     int hashfunc(int value1, int value2, int value3)
-//     {
-//         return value1 + value2 + value3;
-//     }
-};
-class radixHashtable : public HashTable
-{
-public:
-    int base_number(int key)
-    {
-        int n = 0;
-        for (int i = 0; i < 4; i++)
-        {
-            n += key / 10;
-            key /= 10;
-        }
-        return n;
-    }
-    int hashfunc(int value)
-    {
-        int result = base_number(value);
-        return result;
-        // return last4 digit of result;
-    }
-};
 int main()
 {
-    divHashtable dh;
-    dh.insert(1);
-    dh.insert(22);
-    dh.insert(41);
-    cout << "Printing division hash table :  ";
-    dh.printtable();
+    HashTable h;
+    int n;
+    do
+    {
+        cout << "Press 1 to insert key" << endl
+             << "Press 2 to delete key" << endl
+             << "Press 3 to search key" << endl
+             << "Press 4 to increase table size" << endl
+             << "Press 5 to print table " << endl
+             << "Press 0 to exit" << endl;
+        cin >> n;
+        if (!n)
+            break;
+        switch (n)
+        {
+        case 1:
+            cout << "Enter key to insert : ";
+            cin >> n;
+            h.insert(n);
+            break;
+        case 2:
+            cout << "Enter key to delete : ";
+            cin >> n;
+            h.del_key(n);
+            break;
+        case 3:
+            cout << "Enter key to search : ";
+            cin >> n;
+            if (h.search(n) != -999)
+            {
+                cout << "Key found at index : " << h.search(n) << endl;
+            }
+            break;
+        case 4:
+            cout << "Enter increased  table size : ";
+            cin >> n;
+            h.increaseTablesize(n);
+            break;
+        case 5:
+            h.printtable();
+            break;
+        default:
+            cout << "Enter valid input " << endl
+                 << endl;
+            break;
+        }
 
-    mulHashtable mulh;
-    mulh.insert(1);
-    mulh.insert(22);
-    mulh.insert(41);
-    cout << "Printing multiply hash table :  ";
-    mulh.printtable();
+    } while (n != 0);
 
-    middsqrHashtable msh;
-    msh.insert(1);
-    msh.insert(22);
-    msh.insert(41);
-    cout << "Printing mid square hash table :  ";
-    msh.printtable();
-
-    foldingHashtable fh;
-    fh.insert(1);
-    fh.insert(22);
-    fh.insert(41);
-    cout << "Printing folding hash table :  ";
-    fh.printtable();
-
-    radixHashtable rh;
-    rh.insert(1);
-    rh.insert(22);
-    rh.insert(41);
-    cout << "Printing radix hash table :  ";
-    rh.printtable();
     return 0;
 }

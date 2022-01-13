@@ -12,7 +12,7 @@ void print(int *arr, int n)
 }
 void merge(int A[], int mid, int low, int high)
 {
-    int i, j, k, B[high-low+1];
+    int i, j, k, *B=new int[high-low+1];
     i = low;
     j = mid + 1;
     k = low;

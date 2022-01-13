@@ -116,7 +116,7 @@ public:
 
 int main()
 {
-    Node *head, *second, *third;
+    Node *head;
     head = new Node(10);
     head = head->insertAtBeginning(4);
     head = head->insertAtBeginning(14);
